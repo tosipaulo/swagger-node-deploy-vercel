@@ -5,13 +5,21 @@ import swaggerDoc from './swagger.json';
 
 const app = express()
 const port = process.env.PORT || 3333;
+const options = {
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui.css',
+  customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui-bundle.js'
+};
 
 app.use(express.static("api-docs"));
 
 app.use(
   '/api-docs',
+  (req:Request , res: Response, next: NextFunction) => {
+    res.set('Content-Type', 'text/html');
+    next();
+  },
   swaggerUi.serve,
-  swaggerUi.setup(swaggerDoc)
+  swaggerUi.setup(swaggerDoc, options)
 );
 
 app.use(express.json());

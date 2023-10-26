@@ -9,8 +9,15 @@ const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_json_1 = __importDefault(require("./swagger.json"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3333;
+const options = {
+    customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui.css',
+    customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui-bundle.js'
+};
 app.use(express_1.default.static("api-docs"));
-app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default));
+app.use('/api-docs', (req, res, next) => {
+    res.set('Content-Type', 'text/html');
+    next();
+}, swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_json_1.default, options));
 app.use(express_1.default.json());
 app.use((0, morgan_1.default)("tiny"));
 app.get('/', (_req, res) => {
