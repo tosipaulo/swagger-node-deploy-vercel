@@ -1,0 +1,51 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "API - Cooking for Pets",
+        "description": "Documentação para api Cooking for Pets",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Categorias"
+                ],
+                "summary": "Buscar todas as Categorias",
+                "description": "Buscar todas as Categorias",
+                "responses": {
+                    "200": {
+                        "description": "Operação com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Categories"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Categories": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Bovino"
+                    }
+                }
+            }
+        }
+    }
+}

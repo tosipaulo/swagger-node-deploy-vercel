@@ -1,12 +1,33 @@
-import express, { Request, Response } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
+import * as path from 'path';
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import swaggerDoc from './swagger.json';
 
 const app = express()
-const port = process.env.PORT || 3333
+const port = process.env.PORT || 3333;
+
+const options = {
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui.css',
+  customJs: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.9.1/swagger-ui-bundle.min.js'
+};
+
+
+
+app.use(express.static("api-docs"));
+
+app.use(
+  '/api-docs',
+  (req: Request, res: Response, next: NextFunction) => {
+    res.set('Content-Type', 'text/html')
+    next();
+  },
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDoc)
+);
 
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(express.static("public"));
 
 app.get('/', (_req: Request, res: Response) => {
   return res.send('::: Express Typescript on Vercel :::')
